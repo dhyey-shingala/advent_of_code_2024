@@ -3,13 +3,21 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math"
 	"os"
-	"sort"
 	"strings"
 )
 
-func puzzle_1()	{
+func count_occurrences(right []int, num int) int {
+	count := 0
+	for _, n := range right {
+		if n == num {
+			count++
+		}
+	}
+	return count
+}
+
+func puzzle_2() {
 	// Opening a file
 	file, err := os.Open("input.txt")
 	if err != nil {
@@ -23,9 +31,9 @@ func puzzle_1()	{
 
 	// Read file line by line
 	scanner := bufio.NewScanner(file)
-	for scanner.Scan()	{
+	for scanner.Scan() {
 		line := scanner.Text()
-		
+
 		// Split the line by spaces
 		columns := strings.Fields(line)
 
@@ -44,21 +52,21 @@ func puzzle_1()	{
 	}
 
 	// Checking for errors during scanning
-	if err := scanner.Err(); err != nil	{
+	if err := scanner.Err(); err != nil {
 		fmt.Println("Error reading file:", err)
 	}
 
-	// Sorting both slices
-	sort.Ints(column1)
-	sort.Ints(column2)
+	count_of_numbers := make(map[int]int)
 
-	// fmt.Println("Column 1:", column1)
-	// fmt.Println("Column 2:", column2)
-
-	sum := 0
-	for i := 0; i < len(column1); i++ {
-		sum += int(math.Abs(float64(column1[i] - column2[i])))
+	for _, num := range column1 {
+		count_of_numbers[num] = count_occurrences(column2, num)
 	}
 
+	sum := 0
+	for key, value := range count_of_numbers {
+		if value != 0 {
+			sum += key * value
+		}
+	}
 	fmt.Println(sum)
 }
