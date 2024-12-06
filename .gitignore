@@ -2,5 +2,7 @@ day_1/input.txt
 day_2/input.txt
 day_3/input.txt
 day_4/input.txt
+day_5/rules.txt
+day_5/updates.txt
 go.mod
 go.sum
